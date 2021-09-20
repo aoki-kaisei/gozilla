@@ -1,6 +1,7 @@
 package query
 
 import (
+	"fmt"
 	"github.com/gocolly/colly"
 	"net/url"
 	"log"
@@ -23,6 +24,7 @@ func GetLink(baseUrl string) []string{
 			link := element.Attr("href")
 			if(!array.Contains(memo, toAbsUrl(bu, link).String())) {
 				memo = append(memo, toAbsUrl(bu, link).String()) 
+				fmt.Print(memo)
 				c.Visit(element.Request.AbsoluteURL(link))
 			}
 		})
