@@ -1,41 +1,39 @@
 package query
 
 import (
-    "bytes"
-    "io/ioutil"
-    "net/http"
-    "github.com/PuerkitoBio/goquery"
-    "github.com/saintfish/chardet"
-	"golang.org/x/net/html/charset"
-	"github.com/kaseiaoki/gozilla/array"
+	"github.com/gocolly/colly"
 	"net/url"
+	"log"
+	"github.com/kaseiaoki/gozilla/array"
 )
 
 func GetLink(baseUrl string) []string{
-    res, _ := http.Get(baseUrl)
-    defer res.Body.Close()
+		memo := []string{}
+		c := colly.NewCollector()
+		url, err := url.Parse(baseUrl)
+		if err != nil {
+			log.Fatal(err)
+		  }
+		host := url.Hostname()
+		bu, _ := url.Parse(baseUrl) 
+		
+		c.AllowedDomains = []string{host}
 
-	buf, _ := ioutil.ReadAll(res.Body)
+		c.OnHTML("a[href]", func(element *colly.HTMLElement) {
+			link := element.Attr("href")
+			if(!array.Contains(memo, toAbsUrl(bu, link).String())) {
+				memo = append(memo, toAbsUrl(bu, link).String()) 
+				c.Visit(element.Request.AbsoluteURL(link))
+			}
+		})
+		
 	
-    det := chardet.NewTextDetector()
-    detRslt, _ := det.DetectBest(buf)
+		c.OnRequest(func(request *colly.Request) {
+		})
 	
-    bReader := bytes.NewReader(buf)
-    reader, _ := charset.NewReaderLabel(detRslt.Charset, bReader)
+		c.Visit(baseUrl)
 
-    doc, _ := goquery.NewDocumentFromReader(reader)
-
-	var arr = []string{baseUrl}
-	bu, _ := url.Parse(baseUrl)
-    doc.Find("a").Each(func(_ int, s *goquery.Selection) {
-		url, _ := s.Attr("href")
-		var abu = toAbsUrl(bu, url)
-		if(abu.Hostname() == bu.Hostname()) {
-			arr = append(arr, abu.String())
-		}
-  	})
-	au := array.Uniq(arr)
-	return au
+		return memo
 }
 
 func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
@@ -53,5 +51,4 @@ func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
 	}
 	return rel
 }
-
 
