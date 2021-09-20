@@ -38,7 +38,7 @@ var rootCmd = &cobra.Command{
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
 	RunE: func(cmd *cobra.Command, args []string) error {
-		query.GetTitle(url)
+		query.GetLink(url)
 		return nil
 	},
 }

@@ -8,12 +8,12 @@ import (
 
     "github.com/PuerkitoBio/goquery"
     "github.com/saintfish/chardet"
-    "golang.org/x/net/html/charset"
+	"golang.org/x/net/html/charset"
+	"net/url"
 )
 
-func GetTitle(url string) {
-
-    res, _ := http.Get(url)
+func GetLink(baseUrl string) {
+    res, _ := http.Get(baseUrl)
     defer res.Body.Close()
 
 	buf, _ := ioutil.ReadAll(res.Body)
@@ -26,6 +26,31 @@ func GetTitle(url string) {
 
     doc, _ := goquery.NewDocumentFromReader(reader)
 
-    rslt := doc.Find("title").Text()
-    fmt.Println(rslt)
+	var arr = []string{baseUrl}
+	bu, _ := url.Parse(baseUrl)
+    doc.Find("a").Each(func(_ int, s *goquery.Selection) {
+		url, _ := s.Attr("href")
+		var abu = toAbsUrl(bu, url)
+		if(abu.Hostname() == bu.Hostname()) {
+			arr = append(arr, abu.String())
+		}
+  	})
+   
+	fmt.Println(arr)
+}
+
+func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
+	relurl, err := url.Parse(weburl)
+	if err != nil {
+		return nil
+	}
+
+	absurl := baseurl.ResolveReference(relurl)
+	absurlParced := absurl.Scheme + "://" + absurl.Host + absurl.Path
+
+	rel, err := url.Parse(absurlParced)
+	if err != nil {
+		return nil
+	}
+	return rel
 }
