@@ -2,17 +2,15 @@ package query
 
 import (
     "bytes"
-    "fmt"
     "io/ioutil"
     "net/http"
-
     "github.com/PuerkitoBio/goquery"
     "github.com/saintfish/chardet"
 	"golang.org/x/net/html/charset"
 	"net/url"
 )
 
-func GetLink(baseUrl string) {
+func GetLink(baseUrl string) []string{
     res, _ := http.Get(baseUrl)
     defer res.Body.Close()
 
@@ -36,7 +34,7 @@ func GetLink(baseUrl string) {
 		}
   	})
 	au := arrUniq(arr)
-	fmt.Println(au)
+	return au
 }
 
 func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {

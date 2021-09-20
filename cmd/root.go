@@ -32,15 +32,25 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gozilla",
-	Short: "Determine spelling errors",
-	Long: `Determine spelling errors`,
+	Short: "fire spitter",
+	Long: ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
 	RunE: func(cmd *cobra.Command, args []string) error {
-		query.GetLink(url)
+		var memo []string
+		arr := query.GetLink(url)
+		memo = append(memo, arr...)
 		return nil
 	},
+}
+
+func memoLoop(arr []string, memo []string) []string{
+	for i := 0; i < len(arr); i++ {
+		query.GetLink(arr[i])
+   }
+
+   return memo
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
