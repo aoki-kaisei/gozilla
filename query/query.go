@@ -35,8 +35,8 @@ func GetLink(baseUrl string) {
 			arr = append(arr, abu.String())
 		}
   	})
-   
-	fmt.Println(arr)
+	au := arrUniq(arr)
+	fmt.Println(au)
 }
 
 func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
@@ -53,4 +53,18 @@ func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
 		return nil
 	}
 	return rel
+}
+
+
+func arrUniq(arr []string) []string {
+	m := make(map[string]struct{})
+	for _, ele := range arr {
+		m[ele] = struct{}{} // m["a"] = struct{}{} が二度目は同じものとみなされて重複が消える。
+	}
+
+	uniq := [] string{}
+	for i := range m {
+		uniq = append(uniq, i)
+	}
+	return uniq
 }
