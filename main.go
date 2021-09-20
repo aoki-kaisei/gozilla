@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/kaseiaoki/goji/cmd"
+import "github.com/kaseiaoki/gozilla/cmd"
 
 func main() {
 	cmd.Execute()

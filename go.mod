@@ -1,4 +1,4 @@
-module github.com/kaseiaoki/goji
+module github.com/kaseiaoki/gozilla
 
 go 1.15
 

@@ -21,7 +21,7 @@ import (
 	"os"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	"github.com/kaseiaoki/goji/mecab"
+	"github.com/kaseiaoki/gozilla/mecab"
 )
 
 var (
@@ -31,7 +31,7 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "goji",
+	Use:   "gozilla",
 	Short: "Determine spelling errors",
 	Long: `Determine spelling errors`,
 	// Uncomment the following line if your bare application
@@ -71,9 +71,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".goji" (without extension).
+		// Search config in home directory with name ".gozilla" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".goji")
+		viper.SetConfigName(".gozilla")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
