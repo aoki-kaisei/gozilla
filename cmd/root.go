@@ -22,6 +22,7 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 	"github.com/kaseiaoki/gozilla/query"
+	"github.com/kaseiaoki/gozilla/array"
 )
 
 var (
@@ -40,17 +41,36 @@ var rootCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var memo []string
 		arr := query.GetLink(url)
-		memo = append(memo, arr...)
+		result := memoLoop(arr, memo)
+		for i := 0; i < len(result); i++ {
+			fmt.Printf(result[i])
+			fmt.Printf("\n")
+	   }
+	   fmt.Print(len(result))
 		return nil
 	},
 }
 
 func memoLoop(arr []string, memo []string) []string{
+	count := 0
 	for i := 0; i < len(arr); i++ {
-		query.GetLink(arr[i])
-   }
-
-   return memo
+		if(! array.Contains(memo, arr[i])) {
+			links := query.GetLink(arr[i])
+			memo = append(memo, links...)
+			memo = array.Uniq(memo)
+			fmt.Printf(arr[i])
+			fmt.Printf("\n")
+			fmt.Print(len(memo))
+			fmt.Printf("\n")
+		} else {
+			count++
+		}
+	}
+	if(len(memo)!=count) {
+		empty := []string{}
+		memoLoop(memo, empty)
+	}
+	return memo
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

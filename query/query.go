@@ -7,6 +7,7 @@ import (
     "github.com/PuerkitoBio/goquery"
     "github.com/saintfish/chardet"
 	"golang.org/x/net/html/charset"
+	"github.com/kaseiaoki/gozilla/array"
 	"net/url"
 )
 
@@ -33,7 +34,7 @@ func GetLink(baseUrl string) []string{
 			arr = append(arr, abu.String())
 		}
   	})
-	au := arrUniq(arr)
+	au := array.Uniq(arr)
 	return au
 }
 
@@ -54,15 +55,3 @@ func toAbsUrl(baseurl *url.URL, weburl string) *url.URL {
 }
 
 
-func arrUniq(arr []string) []string {
-	m := make(map[string]struct{})
-	for _, ele := range arr {
-		m[ele] = struct{}{} // m["a"] = struct{}{} が二度目は同じものとみなされて重複が消える。
-	}
-
-	uniq := [] string{}
-	for i := range m {
-		uniq = append(uniq, i)
-	}
-	return uniq
-}
