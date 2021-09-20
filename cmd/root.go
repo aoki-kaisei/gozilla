@@ -21,11 +21,11 @@ import (
 	"os"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	"github.com/kaseiaoki/gozilla/mecab"
+	"github.com/kaseiaoki/gozilla/query"
 )
 
 var (
-	text     string
+	url     string
 	cfgFile string
 )
 
@@ -38,8 +38,7 @@ var rootCmd = &cobra.Command{
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
 	RunE: func(cmd *cobra.Command, args []string) error {
-
-		mecab.parse(text)
+		query.GetTitle(url)
 		return nil
 	},
 }
@@ -55,7 +54,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&text, "string", "吾輩は猫である", "text")
+	rootCmd.PersistentFlags().StringVar(&url, "url", "http://example.com", "url")
 }
 
 // initConfig reads in config file and ENV variables if set.
