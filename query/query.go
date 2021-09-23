@@ -22,7 +22,6 @@ func GetLink(baseUrl string) []string {
 	c.OnHTML("a[href]", func(element *colly.HTMLElement) {
 		link := element.Attr("href")
 		absurl := toAbsUrl(bu, link)
-
 		if absurl != nil && !array.Contains(memo, absurl.String()) {
 			memo = append(memo, absurl.String())
 			c.Visit(element.Request.AbsoluteURL(link))

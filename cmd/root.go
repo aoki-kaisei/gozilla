@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/kaseiaoki/gozilla/query"
+	"github.com/kaseiaoki/gozilla/csvwriter"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -26,6 +27,7 @@ import (
 
 var (
 	url     string
+	csv     bool
 	cfgFile string
 )
 
@@ -43,6 +45,9 @@ var rootCmd = &cobra.Command{
 			fmt.Printf(arr[i])
 			fmt.Printf("\n")
 		}
+		if(csv) {
+			csvwriter.Export(arr, url)
+		}
 		return nil
 	},
 }
@@ -59,6 +64,7 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&url, "url", "http://example.com", "url")
+	rootCmd.PersistentFlags().BoolVar(&csv, "csv", true, "csv")
 }
 
 // initConfig reads in config file and ENV variables if set.
