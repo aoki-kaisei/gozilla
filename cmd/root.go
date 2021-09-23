@@ -17,11 +17,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"os"
-	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 	"github.com/kaseiaoki/gozilla/query"
+	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"os"
 )
 
 var (
@@ -33,7 +33,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "gozilla",
 	Short: "fire spitter",
-	Long: ``,
+	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -42,11 +42,10 @@ var rootCmd = &cobra.Command{
 		for i := 0; i < len(arr); i++ {
 			fmt.Printf(arr[i])
 			fmt.Printf("\n")
-	   }
+		}
 		return nil
 	},
 }
-
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
